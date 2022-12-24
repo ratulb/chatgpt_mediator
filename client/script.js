@@ -59,30 +59,41 @@ const handleSubmit = async (e) => {
   chatContainer.scrollTop += chatContainer.scrollHeight;
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
-  const response = await fetch("https://chatgptmediator.onrender.com", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      prompt: data.get("prompt"),
-    }),
-  });
-  clearInterval(loadInterval);
-  messageDiv.innerHTML = "";
-  if (response.ok) {
-    const data = await response.json();
-    const parsedData = data.bot.trim();
-    typeText(messageDiv, parsedData);
-  } else {
-   try {
-    const err = await response.text();
-    console.log(err);
-    alert("Back end failed to respond due to heavy traffic! Please try after a moment!");
-    } catch (error) {
-      console.log(error);
-      alert("Back end failed to respond due to heavy traffic! Please try after a moment!!!");
+  try {
+    const response = await fetch("https://chatgptmediator.onrender.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt: data.get("prompt"),
+      }),
+    });
+    clearInterval(loadInterval);
+    messageDiv.innerHTML = "";
+    if (response.ok) {
+      const data = await response.json();
+      const parsedData = data.bot.trim();
+      typeText(messageDiv, parsedData);
+    } else {
+      try {
+        const err = await response.text();
+        console.log(err);
+        alert(
+          "Communication failure due to heavy traffic! Please try after a moment!"
+        );
+      } catch (error) {
+        console.log(error);
+        alert(
+          "Communication failure due to heavy traffic! Please try after a moment!!"
+        );
+      }
     }
+  } catch (accessError) {
+    console.log(accessError);
+    alert(
+      "Communication failure due to heavy traffic! Please try after a moment!!!"
+    );
   }
 };
 
