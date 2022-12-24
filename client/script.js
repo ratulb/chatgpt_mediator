@@ -75,9 +75,14 @@ const handleSubmit = async (e) => {
     const parsedData = data.bot.trim();
     typeText(messageDiv, parsedData);
   } else {
+   try {
     const err = await response.text();
     console.log(err);
     alert("Back end failed to respond due to heavy traffic! Please try after a moment!");
+    } catch (error) {
+      console.log(error);
+      alert("Back end failed to respond due to heavy traffic! Please try after a moment!!!");
+    }
   }
 };
 
