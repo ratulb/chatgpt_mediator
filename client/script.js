@@ -77,7 +77,7 @@ const handleSubmit = async (e) => {
   } else {
     const err = await response.text();
     console.log(err);
-    alert(err);
+    alert("Back end failed to respond due to heavy traffic! Please try later!");
   }
 };
 
