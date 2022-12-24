@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", async (req, res) => {
-  res.status(200).send({ message: "OK from OpenAI alchemist" });
+  res.status(200).send({ message: "OK from ChatGPT Mediator" });
 });
 app.post("/", async (req, res) => {
   try {
