@@ -79,20 +79,23 @@ const handleSubmit = async (e) => {
       try {
         const err = await response.text();
         console.log(err);
-        alert(
-          "Communication failure due to heavy traffic! Please try after a moment!"
+        typeText(
+          messageDiv,
+          "Sorry! I could not serve you. Communication failure due to heavy traffic! Please try after a moment!"
         );
       } catch (error) {
         console.log(error);
-        alert(
-          "Communication failure due to heavy traffic! Please try after a moment!!"
+        typeText(
+          messageDiv,
+          "Sorry! I could not serve you. Communication failure due to heavy traffic! Please try after a moment!!"
         );
       }
     }
   } catch (accessError) {
     console.log(accessError);
-    alert(
-      "Communication failure due to heavy traffic! Please try after a moment!!!"
+    typeText(
+      messageDiv,
+      "Sorry! I could not serve you. Communication failure due to heavy traffic! Please try after a moment!!!"
     );
   }
 };
