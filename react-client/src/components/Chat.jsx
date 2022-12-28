@@ -9,20 +9,33 @@ function Chat() {
   const [prompt, setPromptValue] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const messageId = () => {
+  const uniqueId = () => {
     return `id-${Date.now()}-${Math.random().toString(16)}`;
   };
   const chatContainer = useRef(null);
+  const spinner = useRef(null);
+
+  useEffect(() => {
+    //if (spinner.current) {
+    //spinner.current.remove();
+    //document.getElementsByClassName("spinner")[0].style.visibility = "none";
+    const spinners = document.getElementsByClassName("spinner");
+    for (const spinner of spinners) {
+      spinner.style.visibility = "none";
+    }
+    //}
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessages([
       ...messages,
-      { messageId: messageId(), fromUser: true, text: prompt },
+      { messageId: uniqueId(), fromUser: true, text: prompt },
     ]);
     fetchData(BACKEND_URL, prompt).then((data) => {
       setMessages((prevs) => [
         ...prevs,
-        { messageId: messageId(), fromUser: false, text: data },
+        { messageId: uniqueId(), fromUser: false, text: data },
       ]);
     });
 
@@ -35,35 +48,50 @@ function Chat() {
       e.preventDefault();
       setMessages((prevs) => [
         ...prevs,
-        { messageId: messageId(), fromUser: true, text: prompt },
+        { messageId: uniqueId(), fromUser: true, text: prompt },
       ]);
       setLoading(true);
+      setMessages((prevs) => [
+        ...prevs,
+        {
+          messageId: uniqueId(),
+          fromUser: false,
+          text: "START_SPINNER",
+          spinner,
+        },
+      ]);
       fetchData(BACKEND_URL, prompt).then((data) => {
-        console.log(prompt);
         console.log(data);
         setLoading(false);
         setMessages((prevs) => [
           ...prevs,
-          { messageId: messageId(), fromUser: false, text: data },
+          { messageId: uniqueId(), fromUser: false, text: data },
         ]);
       });
       setPromptValue("");
-
       chatContainer.current.scrollTop += chatContainer.current?.scrollHeight;
     }
   };
-
+  console.log("Spinner1");
+  console.log(spinner);
+  console.log("Spinner2");
   return (
     <div id="chat">
       <Banner />
       <div id="chat_container" ref={chatContainer}>
-        {messages
-          .filter((msg) => msg.text != "")
-          .map((msg, index) => (
-            <div key={index}>
-              <Message fromUser={msg.fromUser} text={msg.text} />
-            </div>
-          ))}
+        {messages.map((msg, index) => (
+          <React.Fragment key={uniqueId()}>
+            {"START_SPINNER" === msg.text ? (
+              <div key={index} ref={spinner} className="spinner">
+                <Message fromUser={msg.fromUser} text={msg.text} />
+              </div>
+            ) : (
+              <div key={index}>
+                <Message fromUser={msg.fromUser} text={msg.text} />
+              </div>
+            )}
+          </React.Fragment>
+        ))}
       </div>
 
       <form autoComplete="true" noValidate onSubmit={handleSubmit}>

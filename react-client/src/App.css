@@ -87,7 +87,9 @@ body {
   justify-content: center;
   align-items: center;
 }
-
+.hidden {
+  display: none;
+}
 .ai .profile {
   background: #10a37f;
 }

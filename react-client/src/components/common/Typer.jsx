@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-const Typer = ({ content, speed = 30 }) => {
+const Typer = ({ content, speed = 300 }) => {
   const [text, setText] = useState("");
 
   const handleTyping = () => {

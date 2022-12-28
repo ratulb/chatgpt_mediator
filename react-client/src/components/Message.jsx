@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Typer from "./common/Typer";
+import Spinner from "./common/Spinner";
 import Profile from "./Profile";
 
 const Message = ({ messageId, fromUser, text }) => {
@@ -14,9 +15,17 @@ const Message = ({ messageId, fromUser, text }) => {
             {text}
           </div>
         ) : (
-          <div className="message" id={messageId}>
-            <Typer content={text} />
-          </div>
+          <>
+            {"START_SPINNER" === text ? (
+              <div>
+                <Spinner />
+              </div>
+            ) : (
+              <div className="message" id={messageId}>
+                <Typer content={text} />
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

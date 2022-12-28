@@ -1,11 +1,8 @@
-import React from 'react';
-import PropagateLoader from "react-spinners/PropagateLoader";
+import React from "react";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const Spinner = () => {
-    
-  return (
-    <PropagateLoader color='red'/>
-  );
-}
+  return <BeatLoader color="yellow" size={12} />;
+};
 
 export default Spinner;
