@@ -12,5 +12,4 @@ const Profile = ({ userProfile }) => {
     </div>
   );
 };
-
 export default Profile;
