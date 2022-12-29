@@ -28,7 +28,7 @@ const Bot = ({ messageId, prompt }) => {
               {prompt?.trim().length == 0 ? (
                 <>
                   <span>
-                    Umm... Tha's an ambiguous query. My asnwser would be as
+                    Umm... That's an ambiguous query! My asnwser would be as
                     ambiguous!
                     <br />
                   </span>

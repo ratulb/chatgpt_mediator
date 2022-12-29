@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@300&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Source Serif Pro', serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 body {
