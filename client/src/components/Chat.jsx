@@ -61,7 +61,7 @@ function Chat() {
           autoFocus
         ></textarea>
         <button type="submit" disabled={!prompt}>
-          <img src="src/assets/UserImage.png" alt="Send" />
+          <img src={"src/assets/UserImage.png"} alt="Send" />
         </button>
       </form>
     </div>
