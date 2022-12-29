@@ -1,12 +1,8 @@
-import { useState, useEffect } from "react";
-
-const fetchData = async (url, prompt) => {
+const fetchData = async (prompt) => {
+  const BACKEND_URL = "https://chatgptmediator.onrender.com";
   let data;
-  /***
-   * Begin spinner loading
-   */
   try {
-    const response = await fetch(url, {
+    const response = await fetch(BACKEND_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,10 +34,10 @@ const fetchData = async (url, prompt) => {
     data =
       "Communication failure due to heavy traffic! Please try after a moment!!!";
   }
-  /***
-   * Clear spinner here
-   */
   return data;
+};
+export const timeout = (delay) => {
+  return new Promise((res) => setTimeout(res, delay));
 };
 
 export default fetchData;

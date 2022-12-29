@@ -1,13 +1,16 @@
-import React, {useState} from 'react';
-import userImage from '../assets/userImage.jpg';
-import botImage from '../assets/botImage.webp';
+import React, { useState } from "react";
+import userImage from "../assets/UserImage.png";
+import botImage from "../assets/BotImage.webp";
 
-const Profile = ({userProfile}) => {
+const Profile = ({ userProfile }) => {
   return (
-    <div className='profile'>
-        <img src={userProfile? userImage: botImage} alt={userProfile? 'user': 'bot'} />
+    <div className="profile">
+      <img
+        src={userProfile ? userImage : botImage}
+        alt={userProfile ? "user" : "bot"}
+      />
     </div>
-  )
-}
+  );
+};
 
 export default Profile;
