@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import Banner from "./Banner";
+import userImage from "../assets/UserImage.png";
 import Bot from "./Bot";
 import UserPrompt from "./UserPrompt";
 
@@ -61,7 +62,7 @@ function Chat() {
           autoFocus
         ></textarea>
         <button type="submit" disabled={!prompt}>
-          <img src={"src/assets/UserImage.png"} alt="Send" />
+          <img src={userImage} alt="Send" />
         </button>
       </form>
     </div>
