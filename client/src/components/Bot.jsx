@@ -8,7 +8,7 @@ const Bot = ({ messageId, prompt }) => {
   const [loading, setLoading] = useState(true);
   const [response, setResponse] = useState("");
   const [ambiguous, setAmbiguous] = useState(
-    "Umm... Tha's an ambiguous query. My asnwser would be as ambiguous!"
+    "Umm... That's an ambiguous query. My asnwser would be as ambiguous!"
   );
 
   useEffect(() => {
