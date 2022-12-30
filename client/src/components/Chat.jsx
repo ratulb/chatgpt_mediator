@@ -12,12 +12,16 @@ function Chat() {
     return "div_" + Math.random().toString(36).substr(2, 9);
   };
   const chatContainer = useRef(null);
+
   const handleSubmit = async (e) => {
     if (prompt == "" || prompt.length == 0) {
       return false;
     }
     e.preventDefault();
-
+    setPrompts((prevs) => [
+      ...prevs,
+      { messageId: uniqueId(), prompt: prompt },
+    ]);
     setPromptValue("");
     chatContainer.current.scrollTop += chatContainer.current?.scrollHeight;
   };
