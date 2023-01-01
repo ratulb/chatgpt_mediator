@@ -3,13 +3,11 @@ import Typer from "./common/Typer";
 import Profile from "./Profile";
 import BeatLoader from "react-spinners/BeatLoader";
 import fetchData from "./common/Fetcher";
+import Speaker from "./speaker/Speaker";
 
 const Bot = ({ messageId, prompt }) => {
   const [loading, setLoading] = useState(true);
   const [response, setResponse] = useState("");
-  const [ambiguous, setAmbiguous] = useState(
-    "Umm... That's an ambiguous query. My asnwser would be as ambiguous!"
-  );
 
   useEffect(() => {
     fetchData(prompt).then((data) => {
@@ -39,7 +37,10 @@ const Bot = ({ messageId, prompt }) => {
               )}
             </>
           ) : (
-            <Typer content={response} />
+            <>
+              <Speaker textToRead={response} />
+              <Typer content={response} />
+            </>
           )}
         </div>
       </div>
