@@ -3,7 +3,7 @@ import Typer from "./common/Typer";
 import Profile from "./Profile";
 import BeatLoader from "react-spinners/BeatLoader";
 import fetchData from "./common/Fetcher";
-import Speaker from "./speaker/Speaker";
+
 
 const Bot = ({ messageId, prompt }) => {
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,6 @@ const Bot = ({ messageId, prompt }) => {
       setLoading(false);
     });
   }, []);
-
   return (
     <div className="wrapper ai">
       <div className="chat">
@@ -37,10 +36,7 @@ const Bot = ({ messageId, prompt }) => {
               )}
             </>
           ) : (
-            <>
-              <Speaker textToRead={response} />
-              <Typer content={response} />
-            </>
+            <Typer content={response} />
           )}
         </div>
       </div>
