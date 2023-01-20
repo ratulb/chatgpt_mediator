@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import Spectrum from "../speaker/Spectrum";
-import speak from "../speaker/SpeechSynthesizer";
-const Typer = ({ content, speed = 20 }) => {
+import WavesAndText from "../bot/WavesAndText";
+import { speak } from "../speaker/SpeechSynthesizer";
+
+const Typer = ({ content, botMessageId, speed = 0 }) => {
   const [text, setText] = useState("");
   const [utteranceComplete, setUtteranceComplete] = useState(false);
   const handleTyping = () => {
@@ -9,12 +10,13 @@ const Typer = ({ content, speed = 20 }) => {
   };
 
   useEffect(() => {
-    let speechAndConfigs = {
+    let detailedSpeech = {
       speech: content,
-      onUtteranceComplete: setUtteranceComplete,
+      onSpeechComplete: setUtteranceComplete,
+      botMessageId: botMessageId,
     };
-    speak(speechAndConfigs);
-  }, []);
+    speak(detailedSpeech);
+  }, [content, botMessageId]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,12 +28,11 @@ const Typer = ({ content, speed = 20 }) => {
   return (
     <>
       {!utteranceComplete ? (
-        <>
-          <Spectrum />
-          {text}
-        </>
+        <div>
+          <WavesAndText text={text} />
+        </div>
       ) : (
-        <>{text}</>
+        <div>{text}</div>
       )}
     </>
   );

@@ -1,0 +1,105 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    color: var(--white);
+    margin-left: 1.3rem;
+    animation: fadeEffect 2s;
+}
+
+.settings-links {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+}
+
+.settings-links a {
+    text-decoration: none;
+    color: var(--white);
+    padding: 0 5px;
+    background-color: var(--blue);
+    border-radius: 3px;
+}
+
+.settings-links a:hover {
+    background-color: var(--nice-blue);
+}
+
+.settings-links a.active {
+    background-color: var(--nice-blue);
+}
+
+.settings-content>div {
+    display: none;
+    animation: fadeEffect 1s;
+
+}
+
+.settings-content form {
+    display: flex;
+    flex-direction: column;
+    border-style: none !important;
+}
+
+.row {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.row label {
+    margin-right: 1rem;
+}
+
+#voiceAndLang {
+    margin-left: 1.12rem;
+}
+
+#pitch {
+    margin-left: 1.2rem;
+}
+
+#rate {
+    margin-left: 1.30rem;
+}
+
+.settings-content form img {
+    width: 27px;
+    height: 27px;
+}
+
+.settings-content form select,
+input {
+    background-color: var(--white);
+    outline: none;
+    color: var(--nice-blue);
+}
+
+.percentage {
+    margin-left: 5px;
+
+    font-size: small;
+    color: var(--white);
+}
+
+.slider {
+    -webkit-appearance: none;
+    height: 20px;
+    background: var(--white);
+    outline: none;
+
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--nice-blue);
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--nice-blue);
+    cursor: pointer;
+}

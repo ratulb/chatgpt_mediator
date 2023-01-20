@@ -1,53 +1,86 @@
-import React, { useState, useRef } from "react";
-import Banner from "./Banner";
+import React, { useState, useRef, useEffect } from "react";
+import "./chat.css";
 import userImage from "../assets/UserImage.png";
-import Bot from "./Bot";
+import Bot from "./bot/Bot";
 import UserPrompt from "./UserPrompt";
+import SpeakerIcon from "./SpeakerIcon";
+import SavedConversations from "./SavedConversations";
+import { NORMAL } from "./common";
+import {
+  default as uniqueId,
+  saveConversation,
+  UploadHelper,
+  Tooltip,
+} from "./common";
 
 function Chat() {
   const [prompts, setPrompts] = useState([]);
   const [prompt, setPromptValue] = useState("");
 
-  const uniqueId = () => {
-    return "div_" + Math.random().toString(36).substr(2, 9);
-  };
   const chatContainer = useRef(null);
+  const textAreaHandle = useRef(null);
+
+  const setTextAreaContent = (textContent) => {
+    setPromptValue(textContent);
+    if (textAreaHandle.current) {
+      textAreaHandle.current.focus();
+    }
+  };
+
+  useEffect(() => {
+    let current = textAreaHandle.current;
+    const listener = (e) => {
+      if (current.validity.valueMissing) {
+        current.setCustomValidity("Enter your query for chatGPT.");
+      } else {
+        current.setCustomValidity("");
+      }
+    };
+    current.addEventListener('invalid', listener);
+    chatContainer.current.scrollTop = chatContainer.current.scrollHeight;
+    return () => current.removeEventListener('invalid', listener);
+  }, [prompts]);
 
   const handleSubmit = async (e) => {
-    if (prompt == "" || prompt.length == 0) {
+    if (prompt === "" || prompt.length === 0) {
       return false;
     }
     e.preventDefault();
-    setPrompts((prevs) => [
-      ...prevs,
-      { messageId: uniqueId(), prompt: prompt },
-    ]);
+    const msg = { messageId: uniqueId("user"), prompt: prompt };
+    setPrompts((prevs) => [...prevs, msg]);
+    saveConversation(msg, true);
     setPromptValue("");
-    chatContainer.current.scrollTop += chatContainer.current?.scrollHeight;
   };
+
   const onEnterPress = async (e) => {
-    if (prompt == "" || prompt.length == 0) {
+    if (prompt === "" || prompt.length === 0) {
       return false;
     }
 
-    if (e.keyCode == 13 && e.shiftKey == false) {
+    if (e.keyCode === 13 && e.shiftKey === false) {
       e.preventDefault();
-      setPrompts((prevs) => [
-        ...prevs,
-        { messageId: uniqueId(), prompt: prompt },
-      ]);
+      const msg = { messageId: uniqueId("user"), prompt: prompt };
+      setPrompts((prevs) => [...prevs, msg]);
+      saveConversation(msg, true);
       setPromptValue("");
-      chatContainer.current.scrollTop += chatContainer.current?.scrollHeight;
     }
   };
 
   return (
     <div id="chat">
-      <Banner />
       <div id="chat_container" ref={chatContainer}>
+        <SavedConversations
+          prompts={prompts}
+          setTextAreaContent={setTextAreaContent}
+        />
         {prompts.map((prompt, index) => (
           <div key={index}>
-            <UserPrompt messageId={prompt.messageId} prompt={prompt.prompt} />
+            <UserPrompt
+              messageId={prompt.messageId}
+              prompt={prompt.prompt}
+              setTextAreaContent={setTextAreaContent}
+              type={prompt?.prompt.trim().length > 0 ? NORMAL : ""}
+            />
             <Bot messageId={prompt.messageId} prompt={prompt.prompt} />
           </div>
         ))}
@@ -56,6 +89,7 @@ function Chat() {
       <form autoComplete="true" onSubmit={handleSubmit}>
         <textarea
           required
+          ref={textAreaHandle}
           value={prompt}
           onChange={(e) => setPromptValue(e.target.value)}
           name="prompt"
@@ -65,9 +99,17 @@ function Chat() {
           cols="1"
           autoFocus
         ></textarea>
-        <button type="submit" disabled={!prompt}>
-          <img src={userImage} alt="Send" />
-        </button>
+        <Tooltip content="Query ChatGPT" direction="bottom">
+          <button type="submit" id="send" disabled={prompt === ""}>
+            <img src={userImage} alt="Send" />
+          </button>
+        </Tooltip>
+        <Tooltip content="Upload text file" direction="bottom">
+          <UploadHelper textHandler={setTextAreaContent} />
+        </Tooltip>
+        <Tooltip content="Toggle voice" direction="bottom">
+          <SpeakerIcon />
+        </Tooltip>
       </form>
     </div>
   );

@@ -1,10 +1,10 @@
-import "./spectrum.css";
+import "./waves.css";
 
-const Spectrum = () => {
+const Waves = () => {
   return (
     <div>
       <svg
-        className="spectrum"
+        className="waves"
         data-name="Layer 1"
         xmlns="<http://www.w3.org/2000/svg>"
         viewBox="0 0 50 38.05"
@@ -40,4 +40,4 @@ const Spectrum = () => {
   );
 };
 
-export default Spectrum;
+export default Waves;

@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
+:root {
+  --blue: rgb(0, 128, 128);
+  --greenish: rgb(0, 128, 0);
+  --white: snow;
+  --unusual_msg_color: rgb(199, 130, 26);
+  --nice-blue: #0088ff;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -8,166 +16,104 @@
 }
 
 body {
-  background:rgb(0, 128, 128);
+  background: var(--blue);
+  opacity: .9995;
 }
 
-#chat {
-  width: 100vw;
-  height: 100vh;
-  background:rgb(0, 128, 128);
-
+.navbar {
+  margin-top: 0.3rem;
+  color: var(--white);
+  font-size: 1.3rem;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem;
+  position: relative;
+  width: 100vw;
+  height: auto;
+
 }
 
-#banner {
-  margin-top: 20px;
-  color: rgb(0, 128, 0);
-  color: #dcdcdc;
-  font-size: 24px;
-  
+.navbardivider {
+  margin-left: 1.28rem;
+  margin-right: 1rem;
+  color: var(--white);
 }
 
-#chat_container {
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
+.menus {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.navbar a {
+  color: inherit;
+  text-decoration: none;
+  padding: 0.3rem;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  margin-top: .25rem;
+  display: none;
+  z-index: 10;
+  left: auto;
+  list-style: none;
+  font-size: 0.6rem !important;
+  background-color: var(--white);
+  color: var(--blue);
+  border-radius: 0.25rem;
+  min-height: 2.25rem;
+  font-weight: bold;
+}
+
+.dropdown.show {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  padding-bottom: 20px;
-  margin-bottom: 10px;
-  scroll-behavior: smooth;
-  
+  justify-content: space-evenly;
+  align-items: left;
+  flex-wrap: nowrap;
 }
 
-/*hides scrollbar */
-#chat_container::-webkit-scrollbar {
-  display: none;
+.menu-item {
+  border-radius: 0.15rem;
 }
 
-.wrapper {
-  width: 100%;
-  padding: 15px;
+.menus li.active {
+  background-color: var(--nice-blue);
+  color: var(--white);
 }
 
-.ai {
-  background: rgb(0,128, 0);
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
+.menus li:hover {
+  color: var(--nice-blue);
+  background-color: var(--white);
+}
+
+@media only screen and (max-width: 300px) {
+  .navbar ul {
+    display: flex;
+    row-gap: 0.3rem;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .navbar {
+    display: flex;
+    row-gap: 0.3rem;
+    flex-direction: column;
+  }
+}
+
+.logo {
   border-radius: 10px;
-}
+  background-color: var(--greenish);
+  padding: 0 5px;
 
-.chat {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  gap: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  
-}
-
-.profile {
-  width: 36px;
-  height: 36px;
-  border-radius: 5px;
-
-  background: white;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.ai .profile {
-  background:white;
-}
-
-.profile img {
-  width: 90%;
-  height: 90%;
-  object-fit: contain;
-}
-
-.message {
-  flex: 1;
-  color: #dcdcdc;
-  font-size: 20px;
-  max-width: 100%;
-  overflow-x: scroll;
-  /*
-   * white space refers to any spaces, tabs, or newline characters that are used to format the CSS code
-   * specifies how white space within an element should be handled. It is similar to the "pre" value, which tells the browser to treat all white space as significant and to preserve it exactly as it appears in the source code.
-   * The pre-wrap value allows the browser to wrap long lines of text onto multiple lines if necessary.
-   * The default value for the white-space property in CSS is "normal". This tells the browser to collapse multiple white space characters into a single space, and to wrap text onto multiple lines as needed to fit within its container.
-  */
-  white-space: pre-wrap;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* hides scrollbar */
-.message::-webkit-scrollbar {
-  display: none;
-}
-
-form {
-  width: 100%;
-  max-width: 1280px;
-  margin-top: 10px;
-  background: rgb(0, 128, 0);
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  
-}
-
-textarea:-moz-placeholder,
-/* Firefox 18- */
-textarea::-moz-placeholder,
-/* Firefox 19+ */
-textarea:-ms-input-placeholder,
-/* IE 10+ */
-textarea::-webkit-input-placeholder,
-/* Webkit based */
-textarea::placeholder {
-  /* Modern browsers */
-  color: #dcdcdc;
-}
-
-textarea {
-  width: 100%;
-
-  color: #dcdcdc;
-  font-size: 18px;
-
-  padding: 10px;
-  background: transparent;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-}
-
-
-button {
-  outline: 0;
-  border: 0;
-  cursor: pointer;
-  background: transparent;
-}
-
-form img {
-  width: 36px;
-  height: 36px;
-  border-radius: 5px;
 }

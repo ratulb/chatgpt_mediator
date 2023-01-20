@@ -1,0 +1,13 @@
+.actions {
+    color: var(--white);
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1rem;
+    height: 80vh;
+    flex-direction: column;
+    background: var(--blue);
+}

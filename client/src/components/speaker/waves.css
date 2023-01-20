@@ -1,5 +1,4 @@
-
-.spectrum {
+.waves {
     height: 40px;
     width: 40px;
     fill: #fff;
@@ -74,4 +73,3 @@
         transform-origin: 50% 50%;
     }
 }
-

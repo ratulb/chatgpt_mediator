@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import userImage from "../assets/UserImage.png";
 import botImage from "../assets/BotImage.webp";
 
