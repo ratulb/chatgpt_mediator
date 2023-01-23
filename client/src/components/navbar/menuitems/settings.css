@@ -51,6 +51,7 @@
 
 #voiceAndLang {
     margin-left: 1.12rem;
+    max-width: 365px;
 }
 
 #pitch {
