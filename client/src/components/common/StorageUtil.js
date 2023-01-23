@@ -45,36 +45,43 @@ export const loadConversations = () => {
 };
 
 const preProcess = (conversations, conversation, fromUsr) => {
-  let result;
+  let msgType;
 
   if (fromUsr) {
     if (conversation.prompt?.trim() === "") {
-      result = { ...conversation, type: EMPTY_QUERY };
+      msgType = EMPTY_QUERY;
     } else {
-      result = { ...conversation, type: NORMAL };
+      msgType = NORMAL;
     }
   } else {
     let prompt = conversation.prompt;
     if (conversation.prompt === REQUEST_ABORT_MSG) {
-      result = { ...conversation, type: ABORT_RESPONSE };
+      msgType = ABORT_RESPONSE;
 
 
     } else if (prompt.match(COMMUICATION_FAILURE_MSG)) {
-      result = { ...conversation, type: COMM_FAILURE };
+      msgType = COMM_FAILURE;
     }
 
     else {
-      if (conversations.length > 0 && conversation.messageId === conversations[conversations.length - 1].messageId + "_bot") {
-        if (conversations[conversations.length - 1].type === EMPTY_QUERY) {
-          result = { ...conversation, type: AMBIGUOUS_RESPONSE };
+
+      if (conversations.length > 0) {
+        var prevChat = conversations[conversations.length - 1];
+        var prevChatId = prevChat.messageId + "_bot";
+        var prevChatType = prevChat.type;
+        if (conversation.messageId === prevChatId && prevChatType === EMPTY_QUERY) {
+          msgType = AMBIGUOUS_RESPONSE;
         } else {
-          result = { ...conversation, type: NORMAL };
+          msgType = NORMAL;
         }
+
+      } else {
+        msgType = NORMAL;
       }
     }
   }
-  result = { ...result, time: new Date().getTime(), user: fromUsr };
-  return result;
+  const typedMsg = { ...conversation, time: new Date().getTime(), user: fromUsr, type: msgType };
+  return typedMsg;
 
 }
 
