@@ -10,6 +10,7 @@
 .Tooltip-Wrapper {
     display: inline-block;
     position: relative;
+    max-height: 32px;
 }
 
 /* Absolute positioning */
