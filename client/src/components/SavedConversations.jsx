@@ -1,18 +1,22 @@
 import { loadConversations } from "./common";
 import UserPrompt from "./UserPrompt";
 import FinalRender from "./bot/FinalRender";
+import { useState, useEffect } from "react";
 
 const SavedConversations = ({ prompts, setTextAreaContent }) => {
-  const savedConversations = loadConversations();
-  if (savedConversations?.length === 0) {
-    return <></>;
-  }
-  //console.log("Saved: ", savedConversations);
-  //console.log("prompts: ", prompts);
-  const conversations = savedConversations.filter(
-    (conv1) => !prompts.some((conv2) => conv2.messageId === conv1.messageId)
-  );
-  //console.log("conversations: ", conversations);
+  const [savedConversations, _] = useState(loadConversations());
+  const [conversations, setCoversations] = useState([]);
+
+  useEffect(() => {
+    setCoversations(savedConversations.filter(
+      (conv1) => !prompts.some((conv2) => conv2.messageId === conv1.messageId)
+    ));
+  }, []);
+
+
+  //console.log("SavedConversations loadConversations: ", savedConversations);
+  //console.log("SavedConversations prompts: ", prompts);
+  //console.log("SavedConversations filtered conversations: ", conversations);
 
   return (
     <>

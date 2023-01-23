@@ -79,6 +79,9 @@ const preProcess = (conversations, conversation, fromUsr) => {
 }
 
 export const saveConversation = (conversation, fromUsr) => {
+  if (conversation === "" && !fromUsr) {
+    return;
+  }
   const storage = getStorage();
   var conversations = storage.getItem("conversations");
 
