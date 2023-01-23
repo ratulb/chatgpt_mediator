@@ -24,7 +24,7 @@ const About = () => {
         <div>
           <h6>
             <p>
-              ChatGPT Mediator is an interface that aims to harness the amazing capabilities of OpenAI ChatGPT.
+              ChatGPT Mediator is an interface that aims to harness the amazing capabilities of OpenAI ChatGPT and make it more accessible to all and sundry.
             </p>
 
           </h6>
