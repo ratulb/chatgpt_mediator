@@ -6,6 +6,7 @@ import UserPrompt from "./UserPrompt";
 import SpeakerIcon from "./SpeakerIcon";
 import SavedConversations from "./SavedConversations";
 import { NORMAL } from "./common";
+import Recognizer from "./voicerecognition/Recognizer";
 import {
   default as uniqueId,
   saveConversation,
@@ -85,7 +86,7 @@ function Chat() {
           </div>
         ))}
       </div>
-
+      <Recognizer setTextAreaContent={setTextAreaContent} textAreaHandle={textAreaHandle}/>
       <form autoComplete="true" onSubmit={handleSubmit}>
         <textarea
           required
@@ -111,7 +112,7 @@ function Chat() {
           <SpeakerIcon />
         </Tooltip>
       </form>
-    </div>
+    </div >
   );
 }
 

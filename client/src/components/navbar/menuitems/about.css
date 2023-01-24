@@ -11,4 +11,5 @@
     height: 89vh;
     background: var(--blue);
     overflow: hidden;
+    opacity: .75;
 }
