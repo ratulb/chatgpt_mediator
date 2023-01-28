@@ -6,6 +6,7 @@ import UserPrompt from "./UserPrompt";
 import SpeakerIcon from "./SpeakerIcon";
 import SavedConversations from "./SavedConversations";
 import { NORMAL } from "./common";
+import Recognizer from "./voicerecognition/Recognizer";
 import {
   default as uniqueId,
   saveConversation,
@@ -26,6 +27,15 @@ function Chat() {
       textAreaHandle.current.focus();
     }
   };
+
+  function OnInput(element) {
+    element.setAttribute("style", "height: 0");
+    element.setAttribute("style", "scroll-height:" + (element.scrollHeight) + "px");
+  }
+  function textAreaSizing(element) {
+    element.setAttribute("style", "height:" + (element.scrollHeight) + "px;overflow-y:hidden;");
+    element.addEventListener("input", OnInput, false);
+  }
 
   useEffect(() => {
     let current = textAreaHandle.current;
@@ -85,7 +95,7 @@ function Chat() {
           </div>
         ))}
       </div>
-
+      <Recognizer setTextAreaContent={setTextAreaContent} />
       <form autoComplete="true" onSubmit={handleSubmit}>
         <textarea
           required
@@ -95,7 +105,7 @@ function Chat() {
           name="prompt"
           onKeyDown={onEnterPress}
           placeholder="Query ChatGPT..."
-          rows="1"
+          rows="auto"
           cols="1"
           autoFocus
         ></textarea>
@@ -111,7 +121,7 @@ function Chat() {
           <SpeakerIcon />
         </Tooltip>
       </form>
-    </div>
+    </div >
   );
 }
 

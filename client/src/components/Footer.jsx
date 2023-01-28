@@ -5,8 +5,7 @@ const Footer = () => {
     <div className="footer">
       <hr />
       <span>
-        © Ratul Buragohain 2023 - All rights reserved. Email:
-        ratul75@hotmail.com
+        Contact: ratul75@hotmail.com
       </span>
     </div>
   );

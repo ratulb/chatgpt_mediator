@@ -1,3 +1,4 @@
+import { UTTERANCE_LANG } from "../speaker/Constants";
 export const ABORT_RESPONSE = "ABORT_RESPONSE";
 export const EMPTY_QUERY = "EMPTY_QUERY";
 export const AMBIGUOUS_RESPONSE = "AMBIGUOUS_RESPONSE";
@@ -31,6 +32,10 @@ export const getUserVoicePreferences = () => {
   }
   return {};
 }
+
+export const getUserLang = () => {
+  return getUserVoicePreferences().lang || UTTERANCE_LANG;
+};
 
 const getStorage = () =>
   shouldUseLocalStorage() ? localStorage : sessionStorage;

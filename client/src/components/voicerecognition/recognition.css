@@ -1,0 +1,24 @@
+.recognition_on {
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+    -webkit-animation: glowing 1s ease-in-out infinite alternate;
+    -moz-animation: glowing 1s ease-in-out infinite alternate;
+    animation: glowing 1s ease-in-out infinite alternate;
+}
+
+@keyframes glowing {
+    from {
+        box-shadow: 0 0 3px #fff, 0 0 6px blue, 0 0 9px yellowgreen;
+    }
+
+    to {
+        box-shadow: 0 0 3px #fff, 0 0 6px yellowgreen, 0 0 9px white;
+    }
+}
+
+.recognition_off {
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+}
