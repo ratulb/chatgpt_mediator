@@ -1,11 +1,11 @@
 import React from 'react';
-import VoiceRecognitionButton from './VoiceRecognitionButton';
+import VRButton from './VRButton';
 
-const Recognizer = ({ setTextAreaContent, textAreaHandle={textAreaHandle} }) => {
-    const speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const Recognizer = ({ setTextAreaContent }) => {
+    const speechRecognizer = window.SpeechRecognition || window.webkitSpeechRecognition;
     return (
         <div>
-            {speechRecognition && (<VoiceRecognitionButton recognizer={speechRecognition} setTextAreaContent={setTextAreaContent} textAreaHandle={textAreaHandle} />)
+            {speechRecognizer && (<VRButton SpeechRecognizer={speechRecognizer} setTextAreaContent={setTextAreaContent} />)
             }
         </div>
     );
