@@ -6,7 +6,6 @@ const Tooltip = (props) => {
   const [active, setActive] = useState(false);
 
   const hideTip = () => {
-    //setActive(false);
     clearInterval(timeout);
     setActive(false);
   };
