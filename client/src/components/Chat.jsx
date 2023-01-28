@@ -105,7 +105,7 @@ function Chat() {
           name="prompt"
           onKeyDown={onEnterPress}
           placeholder="Query ChatGPT..."
-          rows="auto"
+          rows="1"
           cols="1"
           autoFocus
         ></textarea>

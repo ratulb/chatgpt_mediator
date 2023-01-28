@@ -37,7 +37,7 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent }) => {
     }
 
     function stopSpeechRecognition() {
-        console.log("Stopping recognition");
+        //console.log("Stopping recognition");
         if (currentRecognizer) {
             currentRecognizer.onend = (event) => {
                 setRecognition(false);
@@ -95,7 +95,7 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent }) => {
             });
         }
         currentRecognizer.start();
-        console.log("Starting recognition");
+        //console.log("Starting recognition");
     }
 
     useEffect(() => {
