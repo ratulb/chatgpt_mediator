@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { setSpeechOn, setSpeechOff } from "./common";
-import speakerOnIcon from "../assets/SpeakerOnIcon.png";
-import speakerOffIcon from "../assets/SpeakerOffIcon.png";
+import speakerOnIcon from "../assets/VoiceOnIcon.png";
+import speakerOffIcon from "../assets/VoiceOffIcon.png";
 
 const SpeakerIcon = () => {
   const [isOn, setIsOn] = useState(true);
