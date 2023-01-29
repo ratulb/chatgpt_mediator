@@ -13,13 +13,10 @@ const PASS_THROUGH_QUESTION_MARK = "?";
 const PASS_THROUGH_COMMA = ",";
 const QUESTION_STARTS = new Set(["who", "can", "will", "would", "should", "could", "what", "when", "where", "why", "how", "is", "are", "were", "was"]);
 
-
-const VRButton = ({ SpeechRecognizer, setTextAreaContent }) => {
+const VRButton = ({ SpeechRecognizer, setTextAreaContent, setChanged }) => {
 
     const [recognitionOn, setRecognition] = useState(false);
-    const [changed, setChanged] = useState(false);
     const displayed = useRef([]);
-    const userAgent = useRef(navigator.userAgent);
     var currentRecognizer;
 
     function toggleSpeechRecognition(e) {
@@ -27,13 +24,8 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent }) => {
     }
 
     function update() {
-        setChanged(value => !value);
-    }
-
-    function clearArray(array) {
-        while (array.length > 0) {
-            array.pop();
-        }
+        setTextAreaContent(displayed.current.join(" "));
+        setChanged(curr => !curr);
     }
 
     function stopSpeechRecognition() {
@@ -48,23 +40,13 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent }) => {
 
     function deleteAll() {
         displayed.current = [];
-        setTextAreaContent("");
         update();
     }
 
     function deleteLastSentence() {
         displayed.current.pop();
-        setTextAreaContent("");
         update();
     }
-
-    useEffect(() => {
-        setTextAreaContent("");
-        if (displayed.current.length > 0) {
-            setTextAreaContent(displayed.current.join(" "));
-        }
-    }, [changed]);
-
 
     function startSpeechRecognition() {
         if (!currentRecognizer) {
@@ -89,8 +71,9 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent }) => {
                     .map(cleanUpAll)
                     .map(eraseLastSentence)
                     .flatMap(each => each);
-                displayed.current.push(transcript);
-                // console.log("data returned: ", displayed.current);
+                if (transcript?.length > 0) {
+                    displayed.current.push(transcript);
+                }
                 update();
             });
         }
@@ -202,7 +185,7 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent }) => {
     function isQuestion(sentence) {
         try {
             return QUESTION_STARTS.has(sentence?.trim().split(" ")[0].toLowerCase());
-        }catch(error){
+        } catch (error) {
             console.error(error);
             return false;
         }
@@ -255,7 +238,7 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent }) => {
     }
 
     return (
-        <Tooltip content="Toggle speech recognition. Say coma, delete all etc to punctuate/delete" direction="top">
+        <Tooltip content="Toggle speech recognition. Say coma, delete all/last etc to punctuate/edit" direction="top">
             <button type="button" onClick={(e) => toggleSpeechRecognition(e)}>
                 <img src={recognitionOn ? recognitionOnIcon : recognitionOffIcon} className={recognitionOn ? "recognition_on" : "recognition_off"} alt="Toggle voice recognition" />
             </button>

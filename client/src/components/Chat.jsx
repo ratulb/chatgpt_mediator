@@ -17,6 +17,7 @@ import {
 function Chat() {
   const [prompts, setPrompts] = useState([]);
   const [prompt, setPromptValue] = useState("");
+  const [changed, setChanged] = useState(false);
 
   const chatContainer = useRef(null);
   const textAreaHandle = useRef(null);
@@ -95,7 +96,7 @@ function Chat() {
           </div>
         ))}
       </div>
-      <Recognizer setTextAreaContent={setTextAreaContent} />
+      <Recognizer setTextAreaContent={setTextAreaContent} setChanged={setChanged} />
       <form autoComplete="true" onSubmit={handleSubmit}>
         <textarea
           required
@@ -120,6 +121,7 @@ function Chat() {
         <Tooltip content="Toggle voice" direction="bottom">
           <SpeakerIcon />
         </Tooltip>
+
       </form>
     </div >
   );
