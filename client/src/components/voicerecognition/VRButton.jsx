@@ -255,7 +255,7 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent }) => {
     }
 
     return (
-        <Tooltip content="Toggle speech recognition. Say coma, delete last etc to punctuate/edit" direction="top">
+        <Tooltip content="Toggle speech recognition. Say coma, delete all etc to punctuate/delete" direction="top">
             <button type="button" onClick={(e) => toggleSpeechRecognition(e)}>
                 <img src={recognitionOn ? recognitionOnIcon : recognitionOffIcon} className={recognitionOn ? "recognition_on" : "recognition_off"} alt="Toggle voice recognition" />
             </button>
