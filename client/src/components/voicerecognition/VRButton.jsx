@@ -48,6 +48,11 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent, setChanged }) => {
         update();
     }
 
+    function deleteFirstSentence() {
+        displayed.current.shift();
+        update();
+    }
+
     function startSpeechRecognition() {
         if (!currentRecognizer) {
             currentRecognizer = new SpeechRecognizer();
@@ -70,6 +75,7 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent, setChanged }) => {
                     .map(addPeriodOrQuestionMark)
                     .map(cleanUpAll)
                     .map(eraseLastSentence)
+                    .map(eraseFirstSentence)
                     .flatMap(each => each);
                 if (transcript?.length > 0) {
                     displayed.current.push(transcript);
@@ -177,6 +183,17 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent, setChanged }) => {
         return transcripts;
     }
 
+    function eraseFirstSentence(transcripts) {
+        const transcript = transcripts[0];
+        const match =
+            transcript?.match("Delete first");
+        if (match) {
+            deleteFirstSentence();
+            return [];
+        }
+        return transcripts;
+    }
+
 
     function isQuestion(sentence) {
         try {
@@ -234,7 +251,7 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent, setChanged }) => {
     }
 
     return (
-        <Tooltip content="Toggle speech recognition. Say comma, delete all/last etc to punctuate/edit" direction="top">
+        <Tooltip content="Toggle speech recognition. Say comma, delete all/first/last etc to punctuate/edit." direction="top">
             <button type="button" onClick={(e) => toggleSpeechRecognition(e)}>
                 <img src={recognitionOn ? recognitionOnIcon : recognitionOffIcon} className={recognitionOn ? "recognition_on" : "recognition_off"} alt="Toggle voice recognition" />
             </button>
