@@ -6,7 +6,7 @@ import UserPrompt from "./UserPrompt";
 import SpeakerIcon from "./SpeakerIcon";
 import SavedConversations from "./SavedConversations";
 import { NORMAL } from "./common";
-import Recognizer from "./voicerecognition/Recognizer";
+import VRButton from "./voicerecognition/VRButton";
 import {
   default as uniqueId,
   saveConversation,
@@ -18,7 +18,7 @@ function Chat() {
   const [prompts, setPrompts] = useState([]);
   const [prompt, setPromptValue] = useState("");
   const [changed, setChanged] = useState(false);
-
+  const speechRecognizer = window.SpeechRecognition || window.webkitSpeechRecognition;
   const chatContainer = useRef(null);
   const textAreaHandle = useRef(null);
 
@@ -96,7 +96,10 @@ function Chat() {
           </div>
         ))}
       </div>
-      <Recognizer setTextAreaContent={setTextAreaContent} setChanged={setChanged} />
+
+      <>{speechRecognizer && <VRButton SpeechRecognizer={speechRecognizer} setTextAreaContent={setTextAreaContent} setChanged={setChanged} />
+      }</>
+
       <form autoComplete="true" onSubmit={handleSubmit}>
         <textarea
           required

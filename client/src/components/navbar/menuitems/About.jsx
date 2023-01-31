@@ -16,7 +16,7 @@ const About = () => {
               conversational & contextual than ever. It has set a benchmark - a mile
               stone against which future AI innovations would be measured. It is a
               watershed moment which would have profound impact on how we live, sleep,
-              dream, transact, interact - how we exist as a civilization in comming
+              dream, transact, interact - how we exist as a civilization in coming
               decades, generations - in posterity. Possibilities are limitless.
             </p>
           </h4>

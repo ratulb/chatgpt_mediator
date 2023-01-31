@@ -91,9 +91,6 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent, setChanged }) => {
         return () => stopSpeechRecognition();
     }, [recognitionOn]);
 
-    //const commands = useRef([(transcripts) => comma(transcripts)], (transcripts) => dot(transcripts));
-    //(transcript) => dot(transcript), (transcript) => cleanUpAll(transcript)]);
-
     function question(transcripts) {
         //console.log("The transcripts:", transcripts + "END");
         const transcript = transcripts[0];
@@ -149,7 +146,6 @@ const VRButton = ({ SpeechRecognizer, setTextAreaContent, setChanged }) => {
 
     function addPeriodOrQuestionMark(transcripts) {
         const transcript = transcripts[0];
-        //console.log("What is the type:", typeof transcripts);
         //console.log("The transcripts addPeriodOrQuestionMark:", transcripts + "END");
         const skip = transcript.endsWith(".") || transcript.endsWith(",") || transcript.endsWith("?");
         if (skip) {
