@@ -5,7 +5,7 @@ const Footer = () => {
     <div className="footer">
       <hr />
       <span>
-         Get in touch with me: ratul75@hotmail.com
+        Get in touch: ratul75@hotmail.com
       </span>
     </div>
   );

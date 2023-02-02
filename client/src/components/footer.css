@@ -1,15 +1,12 @@
 .footer {
-    
     bottom: 1.5vh;
     color:var(--white);
-  
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 0.7rem;
     height: 3vh;
-    opacity: .75;
     background: var(--blue);
 }
 .footer hr {
