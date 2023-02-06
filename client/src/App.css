@@ -2,6 +2,7 @@
 
 :root {
   --blue: rgb(0, 128, 128);
+  --blueish: #0650b1;
   --greenish: rgb(0, 128, 0);
   --white: snow;
   --unusual_msg_color: rgb(199, 130, 26);
@@ -16,7 +17,9 @@
 }
 
 body {
-  background-color: var(--blue);
+  
+  background-color: var(--greenish);
+  background-image: linear-gradient(120deg, var(--blueish), var(--greenish));
 }
 
 .navbar {
@@ -31,7 +34,7 @@ body {
   position: relative;
   width: 100vw;
   height: auto;
-  background-color: var(--blue);
+  
   
 }
 

@@ -1,5 +1,5 @@
 .footer {
-    bottom: 1.5vh;
+  bottom: 1.5vh;
     color:var(--white);
     display: flex;
     flex-direction: column;
@@ -7,7 +7,7 @@
     justify-content: center;
     font-size: 0.7rem;
     height: 3vh;
-    background: var(--blue);
+    
 }
 .footer hr {
   color:var(--white);

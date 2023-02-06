@@ -7,8 +7,8 @@
     gap: 1rem;
     padding: 0 1rem;
     flex-direction: column;
-    height: 89vh;
-    background: var(--blue);
+    height: 91vh;
+    
     overflow: hidden;
 }
 
