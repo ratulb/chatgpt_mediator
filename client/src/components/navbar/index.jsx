@@ -2,6 +2,6 @@ import Navbar from "./Navbar";
 import About from "./menuitems/About";
 import Actions from "./menuitems/Actions";
 import Home from "./menuitems/Home";
-import Preferences from "./menuitems/Preferences";
+import Settings from "./menuitems/settings/Settings";
 
-export { Navbar, About, Actions, Preferences, Home };
+export { Navbar, About, Actions, Settings, Home };

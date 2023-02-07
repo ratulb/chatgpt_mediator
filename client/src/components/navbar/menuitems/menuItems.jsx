@@ -19,7 +19,7 @@ export const menuItems = [
   },
   {
     title: "SETTINGS",
-    to: "/preferences",
+    to: "/settings",
   },
   {
     title: "ABOUT",

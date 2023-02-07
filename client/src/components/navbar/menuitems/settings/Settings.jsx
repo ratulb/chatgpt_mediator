@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "./settings.css";
-import { cancelSpeech } from "../../common";
-import AudioPreferences from "./preferences/AudioPreferences";
-import StoragePreferences from "./preferences/StoragePreferences";
-import TabNavItem from "./preferences/TabNavItem";
+import { cancelSpeech } from "../../../common";
+import AudioPreferences from "./AudioPreferences";
+import StoragePreferences from "./StoragePreferences";
+import TabNavItem from "./TabNavItem";
 
-const Preferences = () => {
+const Settings = () => {
   cancelSpeech();
 
   const [activeTab, setActiveTab] = useState("");
@@ -31,4 +31,4 @@ const Preferences = () => {
   );
 };
 
-export default Preferences;
+export default Settings;
