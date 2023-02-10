@@ -29,15 +29,6 @@ function Chat() {
     }
   };
 
-  function OnInput(element) {
-    element.setAttribute("style", "height: 0");
-    element.setAttribute("style", "scroll-height:" + (element.scrollHeight) + "px");
-  }
-  function textAreaSizing(element) {
-    element.setAttribute("style", "height:" + (element.scrollHeight) + "px;overflow-y:hidden;");
-    element.addEventListener("input", OnInput, false);
-  }
-
   useEffect(() => {
     let current = textAreaHandle.current;
     const listener = (e) => {

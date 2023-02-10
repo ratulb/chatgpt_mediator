@@ -25,12 +25,23 @@ export const saveUserVoicePreferences = (userVoicePreferences) => {
   storage.setItem("voice_preferences", JSON.stringify(mergedPrefs));
 };
 
-export const getUserVoicePreferences = () => {
-  const userVoicePreferences = getStorage().getItem("voice_preferences");
+function preferencesFromStore(store) {
+  const userVoicePreferences = store.getItem("voice_preferences");
   if (userVoicePreferences) {
-    return JSON.parse(userVoicePreferences);
+    try {
+      return JSON.parse(userVoicePreferences);
+    } catch (error) {
+      console.error("Pref conversation error", error);
+      return {};
+    }
   }
   return {};
+}
+
+export const getUserVoicePreferences = () => {
+  const storage = getStorage();
+  return preferencesFromStore(storage);
+
 }
 
 export const getUserLang = () => {
@@ -40,13 +51,22 @@ export const getUserLang = () => {
 const getStorage = () =>
   shouldUseLocalStorage() ? localStorage : sessionStorage;
 
-export const loadConversations = () => {
-  const storage = getStorage();
-  const conversations = storage.getItem("conversations");
+function conversationsFromStore(store) {
+  const conversations = store.getItem("conversations");
   if (conversations) {
-    return JSON.parse(conversations);
+    try {
+      return JSON.parse(conversations);
+    } catch (error) {
+      console.error("Conversations load error", error);
+      return [];
+    }
   }
   return [];
+}
+
+export const loadConversations = () => {
+  const storage = getStorage();
+  return conversationsFromStore(storage);
 };
 
 const preProcess = (conversations, conversation, fromUsr) => {
@@ -95,10 +115,7 @@ export const saveConversation = (conversation, fromUsr) => {
     return;
   }
   const storage = getStorage();
-  var conversations = storage.getItem("conversations");
-
-  conversations = conversations ? conversations : "[]";
-  conversations = JSON.parse(conversations);
+  var conversations = conversationsFromStore(storage);
   conversation = preProcess(conversations, conversation, fromUsr);
   conversations.push(conversation);
   storage.setItem("conversations", JSON.stringify(conversations));
@@ -115,14 +132,14 @@ function moveData(toLocal) {
     fromStore = localStorage;
     toStore = sessionStorage;
   }
-  const conversations = fromStore.getItem("conversations");
+  const conversations = conversationsFromStore(fromStore);
   if (conversations) {
-    toStore.setItem("conversations", conversations);
+    toStore.setItem("conversations", JSON.stringify(conversations));
     fromStore.removeItem("conversations");
   }
-  const userVoicePreferences = fromStore.getItem("voice_preferences");
+  const userVoicePreferences = preferencesFromStore(fromStore);
   if (userVoicePreferences) {
-    toStore.setItem("voice_preferences", userVoicePreferences);
+    toStore.setItem("voice_preferences", JSON.stringify(userVoicePreferences));
     fromStore.removeItem("voice_preferences");
   }
   if (toLocal) {
