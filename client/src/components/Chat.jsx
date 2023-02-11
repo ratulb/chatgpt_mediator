@@ -27,6 +27,7 @@ function Chat() {
     if (textAreaHandle.current) {
       textAreaHandle.current.focus();
     }
+    chatContainer.current.scrollTop = chatContainer.current.scrollHeight;
   };
 
   useEffect(() => {
