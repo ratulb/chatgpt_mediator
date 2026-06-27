@@ -1,14 +1,21 @@
 import { REQUEST_ABORT_MSG } from "./StorageUtil";
+import { fetchDirect, getConnectionSettings, abort as directAbort } from "../../fetcher/DirectFetcher.js";
 var abortController;
 
 export function abort() {
-  if (abortController) {
+  if (getConnectionSettings()?.apiKey) {
+    directAbort();
+  } else if (abortController) {
     abortController.abort();
   }
 }
 
 async function fetchData(prompt) {
-  const BACKEND_URL = "https://chatgptmediator.onrender.com";
+  if (getConnectionSettings()?.apiKey) {
+    return fetchDirect(prompt);
+  }
+
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
   let data;
   try {
     abortController = new AbortController();
@@ -26,7 +33,6 @@ async function fetchData(prompt) {
 
     if (response.ok) {
       const resp = await response.json();
-      //Takes care of spurious "," at the beginning of res
       const dataTrimmed = resp.bot.trim().replace(/^,/, "").trim();
       data = dataTrimmed;
     } else {
@@ -43,7 +49,7 @@ async function fetchData(prompt) {
     }
   } catch (abortOrNetworkError) {
     console.error({ abortOrNetworkError });
-    if (abortOrNetworkError.name == 'AbortError') { // handle abort()
+    if (abortOrNetworkError.name == 'AbortError') {
       console.log("Request aborted!", abortOrNetworkError.message);
       data = REQUEST_ABORT_MSG;
     } else {

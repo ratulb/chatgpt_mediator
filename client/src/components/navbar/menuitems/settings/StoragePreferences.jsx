@@ -18,8 +18,8 @@ const StoragePreferences = ({ id, activeTab, cancel }) => {
                 <form id="store_setting_form">
                     <div className="row">
                         <label htmlFor="datastore">Data store</label>
-                        <select name="datastore" defaultValue={storeType} onChange={(e) => setStoreType(e.target.value)}>
-                            <option value="session">Session</option>
+                        <select name="datastore" value={storeType} onChange={(e) => setStoreType(e.target.value)}>
+                            <option value="sessionStorage">Session</option>
                             <option value="localStorage">Local storage</option>
                         </select>
                     </div>

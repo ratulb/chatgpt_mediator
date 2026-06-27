@@ -1,14 +1,9 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
-import { Configuration, OpenAIApi } from "openai";
+import { getBotResponse } from "./llm.js";
 
 dotenv.config();
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-const openai = new OpenAIApi(configuration);
 
 const app = express();
 app.use(cors());
@@ -20,19 +15,11 @@ app.get("/", async (req, res) => {
 app.post("/", async (req, res) => {
   try {
     const prompt = req.body.prompt;
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: `${prompt}`,
-      temperature: 0.1,
-      max_tokens: 2000,
-      top_p: 1,
-      frequency_penalty: 0.5,
-      presence_penalty: 0,
-    });
-    res.status(200).send({ bot: response.data.choices[0].text });
+    const text = await getBotResponse(prompt);
+    res.status(200).send({ bot: text });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: error });
+    res.status(500).send({ message: error.message || error });
   }
 });
 app.listen(5000, () => {

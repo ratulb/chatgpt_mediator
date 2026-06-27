@@ -3,6 +3,7 @@ import "./settings.css";
 import { cancelSpeech } from "../../../common";
 import AudioPreferences from "./AudioPreferences";
 import StoragePreferences from "./StoragePreferences";
+import ConnectionSettings from "./ConnectionSettings";
 import TabNavItem from "./TabNavItem";
 
 const Settings = () => {
@@ -21,10 +22,12 @@ const Settings = () => {
         <ul className="settings-links">
           <TabNavItem title="Audio" id="audio_tab" activeTab={activeTab} setActiveTab={setActiveTab} />
           <TabNavItem title="Storage" id="storage_tab" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <TabNavItem title="Connection" id="connection_tab" activeTab={activeTab} setActiveTab={setActiveTab} />
         </ul>
         <div className="settings-content">
           <AudioPreferences id="audio_tab" activeTab={activeTab} cancel={cancel} />
           <StoragePreferences id="storage_tab" activeTab={activeTab} cancel={cancel} />
+          <ConnectionSettings id="connection_tab" activeTab={activeTab} cancel={cancel} />
         </div>
       </div>
     </div>
