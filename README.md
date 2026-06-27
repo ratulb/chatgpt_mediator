@@ -157,3 +157,5 @@ server/          Express.js API
 - Text file upload
 - Conversations saved to localStorage or sessionStorage
 - Abort / resubmit / delete messages
+
+chatgpt-mediator.vercel.app
