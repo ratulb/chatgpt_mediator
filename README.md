@@ -23,6 +23,8 @@ brew install node
 
 Do **not** use `pip install npm` — pip is for Python packages; npm is a Node.js tool.
 
+---
+
 ## Quick start
 
 ### Option A — automated setup
@@ -79,6 +81,58 @@ The client can call LLM APIs directly from the browser. Open Settings > Connecti
 
 ---
 
+## Features
+
+### Chat interface
+- User and bot profile avatars
+- **Keyboard shortcuts**: `Enter` sends, `Shift+Enter` inserts a newline
+- Empty query validation with custom tooltip
+- Scrollable chat history with auto-scroll on new messages
+
+### Voice recognition (speech-to-text)
+- Built-in browser `SpeechRecognition` API — **free, no API key needed**
+- Works in Chrome, Edge, and Safari
+- Voice commands: say *"comma"*, *"full stop"*, *"question mark"* to punctuate
+- Edit commands: *"Delete all"*, *"Delete last"*, *"Delete first"*
+- Language setting from voice preferences (default: en-US)
+- Automatic sentence capitalization and question detection
+
+### Speech synthesis (text-to-speech)
+- Bot responses read aloud with **typing animation** — text appears as it's spoken
+- Animated sound waves during speech
+- Configurable **voice, volume, pitch, and rate** in Settings > Audio
+- Toggle speech on/off with speaker icon
+- **Replay** button to re-read any bot response
+- Speech auto-cancels when navigating away
+
+### Message management
+- **Abort** in-progress requests
+- **Resubmit** any user prompt (copies it back to the input box)
+- **Delete** individual messages (user or bot)
+- **Copy** bot responses to clipboard
+- Messages classified by type: normal, aborted, ambiguous, communication failure
+
+### Conversation persistence
+- Conversations saved automatically to **localStorage** or **sessionStorage**
+- Toggle storage engine in Settings > Storage
+- Data migrates between stores when you switch
+- Previous conversations restored on page reload
+
+### File upload
+- Upload **.txt files** — content is inserted into the input box
+
+### Settings
+- **Audio**: select system voice, adjust volume/pitch/rate sliders
+- **Storage**: choose between localStorage (persistent) and sessionStorage (per-tab)
+- **Connection**: switch between backend-proxy mode and direct browser-to-LLM mode, configure API key, base URL, and model
+
+### Deployment modes
+- **Express backend** — traditional Node.js server (Render, Railway, Fly)
+- **Serverless functions** — Vercel, Netlify, Cloudflare Pages
+- **Direct/static** — no backend at all, works on GitHub Pages
+
+---
+
 ## Deployment
 
 | Host | Mode | What to deploy |
@@ -122,40 +176,61 @@ Requires `git` remote to be set. Deploys `dist/` to the `gh-pages` branch.
 
 ---
 
+## Routes (client)
+
+| Path | Page | Component |
+|------|------|-----------|
+| `#/` | Chat | Main conversation interface |
+| `#/settings` | Settings | Audio, Storage, and Connection preferences |
+| `#/actions` | Actions | Placeholder |
+| `#/about` | About | About page |
+
+---
+
 ## Project structure
 
 ```
-client/          React + Vite SPA
+client/              React + Vite SPA
   src/
-    components/  UI components (Chat, Settings, bot/, speaker/, ...)
-    fetcher/     DirectFetcher.js — browser-side LLM calls
-server/          Express.js API
-  server.js      Express entrypoint
-  llm.js         LLM provider abstraction (mock, openai, ollama, generic)
-  api/chat.js    Vercel serverless handler
-  netlify/       Netlify serverless handler
-  functions/     Cloudflare Pages handler
+    components/
+      Chat.jsx           Main chat interface
+      UserPrompt.jsx     User message bubble (resubmit, delete)
+      SavedConversations.jsx  Restore previous chats
+      bot/               Bot response rendering pipeline
+        Bot.jsx               Orchestrator (fetch, loading, done)
+        InprogressRequest.jsx Loading state with abort
+        ResponseHandler.jsx   Speech → final display
+        InitialRender.jsx     First render with speech + waves
+        FinalRender.jsx       Final message (copy, replay, delete)
+        WavySpeaker.jsx       Animated waves during speech
+        WavesAndText.jsx      Text + wave animation
+        AbortedRequest.jsx    Cancelled request display
+      speaker/           Speech synthesis engine
+        SpeechSynthesizer.jsx  Browser SpeechSynthesis wrapper
+        Waves.jsx             CSS wave animation
+        Constants.jsx         Default voice settings
+      voicerecognition/  Speech-to-text
+        VRButton.jsx          Microphone toggle + voice commands
+      navbar/            Navigation
+        Navbar.jsx
+        menuitems/       Route pages (Home, Settings, Actions, About)
+          settings/      Settings tabs (Audio, Storage, Connection)
+      common/            Shared utilities
+        Fetcher.jsx           Backend API caller
+        StorageUtil.js        localStorage/sessionStorage manager
+        Typer.jsx             Typing animation
+        Loader.jsx            Loading spinner
+        Tooltip.jsx           Hover tooltips
+        useFetch.jsx          Generic fetch hook
+        ProfiledMsgTemplate.jsx  Message layout wrapper
+        UploadHelper.jsx      Text file upload
+    fetcher/
+      DirectFetcher.js   Browser-side OpenAI-compatible API caller
+
+server/                Express.js API
+  server.js            Express entrypoint
+  llm.js               LLM provider abstraction (mock, openai, ollama, generic)
+  api/chat.js          Vercel serverless handler
+  netlify/functions/   Netlify serverless handler
+  functions/           Cloudflare Pages handler
 ```
-
----
-
-## Routes (client)
-
-| Path | Page |
-|------|------|
-| `/` | Chat |
-| `/settings` | Audio, Storage, and Connection preferences |
-| `/actions` | Placeholder |
-| `/about` | About |
-
----
-
-## Features
-
-- Chat interface with streaming-like bot responses
-- Voice recognition and speech synthesis
-- Text file upload
-- Conversations saved to localStorage or sessionStorage
-- Abort / resubmit / delete messages
-
-chatgpt-mediator.vercel.app
