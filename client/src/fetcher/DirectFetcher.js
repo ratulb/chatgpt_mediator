@@ -58,7 +58,12 @@ export async function fetchDirect(prompt) {
     } else {
       const err = await response.text();
       console.error({ err });
-      return `API error: ${response.status}`;
+      let msg = `API error: ${response.status}`;
+      try {
+        const body = JSON.parse(err);
+        if (body.error?.message) msg += ` — ${body.error.message}`;
+      } catch {}
+      return msg;
     }
   } catch (abortOrNetworkError) {
     console.error({ abortOrNetworkError });
