@@ -142,4 +142,4 @@ server/              Express.js API
 
 ## License
 
-MIT
+GNU AGPL v3

@@ -1,20 +1,12 @@
 # LLM Mediator — Agent Guide
 
 ## Project
-A lightweight, provider-agnostic layer between users and any LLM (OpenAI, Anthropic, open-weight models). Born in the weeks after ChatGPT's launch; revived as a multi-provider, multi-operation platform.
+Provider-agnostic chat UI + proxy server. Supports OpenAI, Anthropic-style (via generic), Ollama, and mock modes.
 
 ## Structure
-- **`client/`** — React 19 + Vite 6 SPA (ESM). HashRouter, `base: './'` for static hosting.
-- **`server/`** — Express.js API (ESM). Single POST `/` proxying to LLM. `nodemon` for dev.
-- Both have independent `package.json`. Run `npm install` in each separately.
-
-## Setup
-```bash
-cp client/.env.Example client/.env         # VITE_BACKEND_URL=http://localhost:5000
-cp server/.env.Example server/.env         # set LLM_PROVIDER / keys
-./setup.sh                                  # or: server && npm install && npm run server
-                                            #     client && npm install && npm run dev
-```
+- **`client/`** — React 19 + Vite 6 SPA (ESM). HashRouter, `base: './'` for static hosting (GitHub Pages, etc.).
+- **`server/`** — Express.js API (ESM). Single POST `/` proxying to LLM via `nodemon`.
+- Both have independent `package.json` — `npm install` in each separately. `./setup.sh` does both.
 
 ## Commands
 | Where | Script | What |
@@ -23,58 +15,39 @@ cp server/.env.Example server/.env         # set LLM_PROVIDER / keys
 | server | `npm start` | `node server` (prod) |
 | client | `npm run dev` | Vite on `:5173`, network-accessible |
 | client | `npm run build` | production build → `client/dist/` |
-| client | `npm run deploy` | `vite build && gh-pages -d dist` |
+| client | `npm run preview` | Vite preview of production build |
+| client | `npm run deploy` | `vite build && npx gh-pages -d dist` |
 
 ## LLM providers (`server/.env`)
-`LLM_PROVIDER` selects the backend adapter: `openai` (default, needs `OPENAI_API_KEY`), `mock` (canned replies, no key), `ollama` (needs `LLM_BASE_URL`), `generic` (needs `LLM_BASE_URL` + `LLM_API_KEY`). Additional: `LLM_MODEL` (default `gpt-4o-mini`).
+`LLM_PROVIDER` picks the adapter in `server/llm.js`:
+- `openai` (default) — needs `OPENAI_API_KEY`
+- `mock` — canned replies, no key needed
+- `ollama` — needs `LLM_BASE_URL` (default model `llama3.2` in template)
+- `generic` — needs `LLM_BASE_URL` + `LLM_API_KEY` (OpenRouter, Groq, etc.)
+
+Also: `LLM_MODEL` (default `gpt-4o-mini`). To add a provider, add it to the `PROVIDERS` map in `server/llm.js:28`.
 
 ## Direct mode (no backend)
-Client calls OpenAI-compatible APIs directly from the browser. Enabled in Settings > Connection. Connection settings stored in `localStorage` under key `direct_connection`. Fetcher auto-detects: if `direct_connection.apiKey` is set, delegates to `DirectFetcher.js`; else POSTs to `VITE_BACKEND_URL`.
-
-## Serverless adapters
-Three nearly-identical handlers exporting `getBotResponse` for Vercel (`server/api/chat.js`), Netlify (`server/netlify/functions/chat.mjs`), Cloudflare Pages (`server/functions/api/chat.js`). CI (`.github/workflows/deploy-pages.yml`) builds `client/` only and deploys to GitHub Pages on push to `main`.
+Client calls OpenAI-compatible APIs from the browser. Connection settings in `localStorage` key `direct_connection`. If `apiKey` is set, `DirectFetcher.js` handles the call; otherwise POSTs to `VITE_BACKEND_URL`.
 
 ## Storage
 - Conversations at key `conversations`; voice prefs at `voice_preferences`.
-- Engine toggled in Settings (Storage): localStorage (persistent) vs sessionStorage (per-tab). `store_type` flag in localStorage tracks the choice. `moveData()` migrates on switch.
-
-## Quality
-- **No test framework, no linter, no typechecker.** Nothing to run for verification.
-- `Capabilities` page is a categorized catalog of LLM operations (all disabled except Chat — see roadmap below).
+- Engine toggled in Settings: localStorage (persistent) vs sessionStorage (per-tab). `store_type` flag in localStorage tracks choice. `moveData()` migrates data between stores on switch.
 
 ## Routing
 | Path | Component |
 |------|-----------|
 | `#/` | Chat |
 | `#/settings` | Settings (Audio, Storage, Connection) |
-| `#/capabilities` | Capabilities catalog (roadmap) |
+| `#/capabilities` | Capabilities catalog |
 | `#/about` | About |
 
-## Implementation roadmap
+## Serverless adapters
+Three handlers exporting `getBotResponse`: Vercel (`server/api/chat.js`), Netlify (`server/netlify/functions/chat.mjs`), Cloudflare Pages (`server/functions/api/chat.js`). CI (`.github/workflows/deploy-pages.yml`) builds only `client/` and deploys to GitHub Pages on push to `main`.
 
-### Phase 0 — Prerequisites
-- Add MIT `LICENSE`
-- Rename GitHub repo `chatgpt_mediator` → `llm_mediator` (user action)
+## Quality
+- **No test framework, no linter, no typechecker.** Nothing to run for verification.
+- Feature roadmap in `ROADMAP.md`. Only Chat is active; everything else is planned.
 
-### Phase 1 — Identity (done)
-- Rebranded source: `<title>`, navbar brand, About page, package names, nav label → "CAPABILITIES"
-- About page: three-block structure (vision / what it does / genesis)
-
-### Phase 2 — Capabilities catalog (done)
-- Data-driven grid component with categories: Text, Knowledge & Retrieval, Multimodal, Agentic, Governance
-- Only Chat enabled; all others show "Available in a future update"
-- Route updated from `/actions` to `/capabilities`
-
-### Phase 3 — Connection expansion (deferred)
-- Add temperature, maxTokens, systemPrompt to ConnectionSettings UI
-- Centralize user-facing strings in `constants.js`
-- Add BYOK trust note
-
-### Phase 4 — Repo polish (pending)
-- Overhaul `README.md`
-- Add `ROADMAP.md`, `CONTRIBUTING.md`
-- Replace ChatGPT-specific favicon and bot image
-- GitHub Pages deploy already automated via CI
-
-### Phase 5 — Developer UX (future)
-- Streaming responses, conversation export, compare-models mode
+## Stale artifacts
+- `ChatGPTMediator.png` at repo root — leftover from pre-rebrand. Safe to delete.
