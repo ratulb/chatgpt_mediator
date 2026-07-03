@@ -7,8 +7,7 @@ const MenuItem = ({ item }) => {
   const location = useLocation();
   const match = location.pathname === item.to;
   const [dropdown, setDropdown] = useState(false);
-  //const [deActive, setDeActive] = useState(item.to === "/actions" || item.to === "/preferences");
-  const [deActive, setDeActive] = useState(item.to === "/actions");
+  const [deActive, setDeActive] = useState(false);
 
   const ddReference = useRef();
   useEffect(() => {

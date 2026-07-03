@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", async (req, res) => {
-  res.status(200).send({ message: "OK from ChatGPT Mediator" });
+  res.status(200).send({ message: "OK from LLM Mediator" });
 });
 app.post("/", async (req, res) => {
   try {

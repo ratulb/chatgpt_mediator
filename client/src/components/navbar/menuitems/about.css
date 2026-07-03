@@ -4,20 +4,28 @@
     justify-content: space-evenly;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1rem;
-    padding: 0 1rem;
+    gap: 2rem;
+    padding: 2rem 1rem;
     flex-direction: column;
-    height: 91vh;
-    
+    min-height: 91vh;
     overflow: hidden;
+}
+
+.block {
+    max-width: 600px;
+    text-align: center;
 }
 
 .h_3 {
    font-size: 1.3rem;
+   font-weight: 600;
+   margin-bottom: 0.75rem;
 }
+
 .inner_content {
     font-size: 1rem;
     text-align: center;
+    line-height: 1.6;
 }
 
 .about_mediator {
@@ -25,4 +33,3 @@
     text-align: center;
     font-style: italic;
 }
-

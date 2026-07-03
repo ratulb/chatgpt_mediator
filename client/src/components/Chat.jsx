@@ -13,6 +13,7 @@ import {
   UploadHelper,
   Tooltip,
 } from "./common";
+import { PLACEHOLDER_TEXT, SEND_TOOLTIP, VALIDATION_EMPTY } from "../constants";
 
 function Chat() {
   const [prompts, setPrompts] = useState([]);
@@ -34,7 +35,7 @@ function Chat() {
     let current = textAreaHandle.current;
     const listener = (e) => {
       if (current.validity.valueMissing) {
-        current.setCustomValidity("Enter your query for chatGPT.");
+        current.setCustomValidity(VALIDATION_EMPTY);
       } else {
         current.setCustomValidity("");
       }
@@ -100,12 +101,12 @@ function Chat() {
           onChange={(e) => setPromptValue(e.target.value)}
           name="prompt"
           onKeyDown={onEnterPress}
-          placeholder="Query ChatGPT..."
+          placeholder={PLACEHOLDER_TEXT}
           rows="1"
           cols="1"
           autoFocus
         ></textarea>
-        <Tooltip content="Query ChatGPT" direction="bottom">
+        <Tooltip content={SEND_TOOLTIP} direction="bottom">
           <button type="submit" id="send" disabled={prompt === ""}>
             <img src={userImage} alt="Send" />
           </button>

@@ -1,89 +1,80 @@
-# ChatGPT Mediator — Agent Guide
+# LLM Mediator — Agent Guide
 
-## Project structure
-- **`client/`** — React + Vite SPA (ESM). Runs `vite dev --host 0.0.0.0` for network access.
-- **`server/`** — Express.js API (ESM). Single POST `/` proxying to OpenAI. Uses modern `openai` v4 SDK.
-- Both have independent `package.json`, `package-lock.json`. Run `npm install` in each separately.
+## Project
+A lightweight, provider-agnostic layer between users and any LLM (OpenAI, Anthropic, open-weight models). Born in the weeks after ChatGPT's launch; revived as a multi-provider, multi-operation platform.
 
-## Prerequisites
-- **Node.js v18+** and **npm** (install via `apt`, `brew`, or `nvm`). Do **not** use `pip install npm` — this is a Node.js project, not Python.
-- Run `./setup.sh` for automated install, or follow the manual steps below.
+## Structure
+- **`client/`** — React 19 + Vite 6 SPA (ESM). HashRouter, `base: './'` for static hosting.
+- **`server/`** — Express.js API (ESM). Single POST `/` proxying to LLM. `nodemon` for dev.
+- Both have independent `package.json`. Run `npm install` in each separately.
 
 ## Setup
 ```bash
-# server
-cp server/.env.Example server/.env  # set OPENAI_API_KEY or use mock mode
-cd server && npm install && npm run server  # nodemon on :5000
-
-# client
-cd client && npm install && npm run dev     # Vite on :5173
+cp client/.env.Example client/.env         # VITE_BACKEND_URL=http://localhost:5000
+cp server/.env.Example server/.env         # set LLM_PROVIDER / keys
+./setup.sh                                  # or: server && npm install && npm run server
+                                            #     client && npm install && npm run dev
 ```
 
-## Key wiring
-- Backend URL comes from `VITE_BACKEND_URL` (default `http://localhost:5000`). Set in `client/.env`.
-- Conversations stored in `localStorage` or `sessionStorage` (toggle in Settings). Key: `conversations`, format: `[{messageId, prompt, time, user, type}]`.
-- Voice prefs stored at key `voice_preferences`; `store_type` flag determines storage engine.
-- Server supports multiple LLM providers via `LLM_PROVIDER` env var (see below).
+## Commands
+| Where | Script | What |
+|-------|--------|------|
+| server | `npm run server` | nodemon on `:5000` |
+| server | `npm start` | `node server` (prod) |
+| client | `npm run dev` | Vite on `:5173`, network-accessible |
+| client | `npm run build` | production build → `client/dist/` |
+| client | `npm run deploy` | `vite build && gh-pages -d dist` |
 
-## Routes (client)
+## LLM providers (`server/.env`)
+`LLM_PROVIDER` selects the backend adapter: `openai` (default, needs `OPENAI_API_KEY`), `mock` (canned replies, no key), `ollama` (needs `LLM_BASE_URL`), `generic` (needs `LLM_BASE_URL` + `LLM_API_KEY`). Additional: `LLM_MODEL` (default `gpt-4o-mini`).
+
+## Direct mode (no backend)
+Client calls OpenAI-compatible APIs directly from the browser. Enabled in Settings > Connection. Connection settings stored in `localStorage` under key `direct_connection`. Fetcher auto-detects: if `direct_connection.apiKey` is set, delegates to `DirectFetcher.js`; else POSTs to `VITE_BACKEND_URL`.
+
+## Serverless adapters
+Three nearly-identical handlers exporting `getBotResponse` for Vercel (`server/api/chat.js`), Netlify (`server/netlify/functions/chat.mjs`), Cloudflare Pages (`server/functions/api/chat.js`). CI (`.github/workflows/deploy-pages.yml`) builds `client/` only and deploys to GitHub Pages on push to `main`.
+
+## Storage
+- Conversations at key `conversations`; voice prefs at `voice_preferences`.
+- Engine toggled in Settings (Storage): localStorage (persistent) vs sessionStorage (per-tab). `store_type` flag in localStorage tracks the choice. `moveData()` migrates on switch.
+
+## Quality
+- **No test framework, no linter, no typechecker.** Nothing to run for verification.
+- `Capabilities` page is a categorized catalog of LLM operations (all disabled except Chat — see roadmap below).
+
+## Routing
 | Path | Component |
 |------|-----------|
-| `/` | `Chat` — main chat UI |
-| `/settings` | Audio + Storage + Connection preferences |
-| `/actions` | Empty placeholder |
-| `/about` | About page |
+| `#/` | Chat |
+| `#/settings` | Settings (Audio, Storage, Connection) |
+| `#/capabilities` | Capabilities catalog (roadmap) |
+| `#/about` | About |
 
-## LLM provider modes (server env vars)
+## Implementation roadmap
 
-| `LLM_PROVIDER` | Description | Requires |
-|----------------|-------------|----------|
-| `openai` (default) | OpenAI API (via v4 SDK) | `OPENAI_API_KEY` |
-| `mock` | Canned responses, no API key | Nothing |
-| `ollama` | Local Ollama instance | `LLM_BASE_URL=http://localhost:11434/v1` |
-| `generic` | Any OpenAI-compatible API | `LLM_BASE_URL` + `LLM_API_KEY` |
+### Phase 0 — Prerequisites
+- Add MIT `LICENSE`
+- Rename GitHub repo `chatgpt_mediator` → `llm_mediator` (user action)
 
-Additional env vars: `LLM_MODEL` (default `gpt-4o-mini`), `LLM_BASE_URL`, `LLM_API_KEY`.
+### Phase 1 — Identity (done)
+- Rebranded source: `<title>`, navbar brand, About page, package names, nav label → "CAPABILITIES"
+- About page: three-block structure (vision / what it does / genesis)
 
-## Direct mode (no backend at all)
-The client can call LLM APIs directly from the browser. Enabled in Connection Settings. Works on any static host including GitHub Pages.
+### Phase 2 — Capabilities catalog (done)
+- Data-driven grid component with categories: Text, Knowledge & Retrieval, Multimodal, Agentic, Governance
+- Only Chat enabled; all others show "Available in a future update"
+- Route updated from `/actions` to `/capabilities`
 
-## Deployment
-| Host | Mode | What to deploy |
-|------|------|----------------|
-| Render / Railway / Fly | Backend | `server/` Express app |
-| Vercel | Backend (serverless) | `server/api/` functions + `client/` |
-| Netlify | Backend (serverless) | `server/netlify/functions/` + `client/` |
-| Cloudflare Pages | Backend (serverless) | `server/functions/` + `client/` |
-| GitHub Pages | Direct only | `client/` (user provides key) |
+### Phase 3 — Connection expansion (deferred)
+- Add temperature, maxTokens, systemPrompt to ConnectionSettings UI
+- Centralize user-facing strings in `constants.js`
+- Add BYOK trust note
 
-## Testing / Quality
-- No test framework, no linter, no typechecker configured.
+### Phase 4 — Repo polish (pending)
+- Overhaul `README.md`
+- Add `ROADMAP.md`, `CONTRIBUTING.md`
+- Replace ChatGPT-specific favicon and bot image
+- GitHub Pages deploy already automated via CI
 
-## Notable quirks
-- `Actions` page is an empty placeholder. `/about` route exists but the About component is minimal.
-- Server has no `build` script; only `nodemon` for dev. Production uses `node server/server.js`.
-
-## Modernization plan (executing)
-
-### Step 1 — Configurable backend URL
-`Fetcher.jsx` reads `import.meta.env.VITE_BACKEND_URL` instead of a hardcoded URL.
-Default: `http://localhost:5000`. Set in `client/.env`.
-
-### Step 2 — Server mock mode
-When `MOCK_RESPONSES=true`, `/post` returns a canned reply without calling any LLM.
-
-### Step 3 — Fix StoragePreferences bug
-`<select defaultValue>` → `<select value>`. Fix option values to match actual keys.
-
-### Step 4 — Dependency bumps
-Client: React 19, Vite 6, `@vitejs/plugin-react` 4+, `react-router-dom` 7+.
-Server: `openai` v4 SDK, migrate to `chat.completions.create`.
-
-### Step 5 — LLM provider abstraction (`server/llm.js`)
-Adapter pattern: mock, openai, ollama, generic. Selected by `LLM_PROVIDER`.
-
-### Step 6 — Direct mode fetcher (`client/src/fetcher/DirectFetcher.js`)
-Browser-side fetch to any OpenAI-compatible API. Settings UI for API key + base URL.
-
-### Step 7 — Universal serverless adapter
-Shared handler exported for Vercel (`api/chat.js`), Netlify (`netlify/functions/chat.mjs`), Cloudflare Pages (`functions/api/chat.js`).
+### Phase 5 — Developer UX (future)
+- Streaming responses, conversation export, compare-models mode

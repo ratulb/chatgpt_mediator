@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <div>
       <nav className="navbar">
-        <Link to="/">ChatGPT Mediator</Link>
+        <Link to="/">LLM Mediator</Link>
         <ul className="menus">
           {menuItems.map((item, index) => {
             return <MenuItem item={item} key={index} />;

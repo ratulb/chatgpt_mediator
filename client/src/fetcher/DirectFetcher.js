@@ -45,7 +45,10 @@ export async function fetchDirect(prompt) {
         },
         body: JSON.stringify({
           model: settings.model || "gpt-4o-mini",
-          messages: [{ role: "user", content: prompt }],
+          messages: [
+            ...(settings.systemPrompt ? [{ role: "system", content: settings.systemPrompt }] : []),
+            { role: "user", content: prompt },
+          ],
           temperature: settings.temperature ?? 0.1,
           max_tokens: settings.maxTokens ?? 2000,
         }),

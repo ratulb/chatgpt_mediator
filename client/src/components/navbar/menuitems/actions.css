@@ -1,13 +1,114 @@
-.actions {
+.capabilities {
+    padding: 2rem;
+    min-height: 90vh;
     color: var(--white);
-    font-size: 1rem;
+}
+
+.capabilities-heading {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.capabilities-subtitle {
+    text-align: center;
+    margin-bottom: 2rem;
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+.capabilities-grid {
+    max-width: 1000px;
+    margin: 0 auto;
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    padding: 0 1rem;
-    height: 80vh;
     flex-direction: column;
-    background: var(--blue);
+    gap: 2rem;
+}
+
+.capability-category {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.category-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+}
+
+.category-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.75rem;
+}
+
+.capability-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.card-enabled {
+    cursor: pointer;
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+.card-enabled:hover {
+    background: rgba(76, 175, 80, 0.08);
+    border-color: rgba(76, 175, 80, 0.6);
+}
+
+.card-disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+.card-disabled:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.card-name {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.card-badge {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.card-badge.enabled {
+    background: rgba(76, 175, 80, 0.2);
+    color: #81c784;
+}
+
+.card-badge.disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.card-description {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    opacity: 0.7;
+    margin: 0;
 }

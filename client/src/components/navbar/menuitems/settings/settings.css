@@ -112,3 +112,20 @@ input {
     background: var(--nice-blue);
     cursor: pointer;
 }
+
+.settings-content form textarea.settings-input {
+    background-color: var(--white);
+    outline: none;
+    color: var(--nice-blue);
+    resize: vertical;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.byok-note p {
+    font-size: 0.78rem;
+    opacity: 0.65;
+    margin: 0;
+    max-width: 420px;
+    line-height: 1.5;
+}

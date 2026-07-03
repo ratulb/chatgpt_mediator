@@ -13,11 +13,14 @@ const ConnectionSettings = ({ id, activeTab, cancel }) => {
   const [apiKey, setApiKey] = useState(existing.apiKey || "");
   const [baseUrl, setBaseUrl] = useState(existing.baseUrl || "https://api.openai.com/v1");
   const [model, setModel] = useState(existing.model || "gpt-4o-mini");
+  const [temperature, setTemperature] = useState(existing.temperature ?? 0.1);
+  const [maxTokens, setMaxTokens] = useState(existing.maxTokens ?? 2000);
+  const [systemPrompt, setSystemPrompt] = useState(existing.systemPrompt || "");
 
   const handleSave = (e) => {
     e.preventDefault();
     if (mode === "direct") {
-      saveConnectionSettings({ apiKey, baseUrl, model });
+      saveConnectionSettings({ apiKey, baseUrl, model, temperature, maxTokens, systemPrompt });
     } else {
       clearConnectionSettings();
     }
@@ -73,6 +76,45 @@ const ConnectionSettings = ({ id, activeTab, cancel }) => {
                     placeholder="gpt-4o-mini"
                     className="settings-input"
                   />
+                </div>
+                <div className="row">
+                  <label htmlFor="temperature">Temperature</label>
+                  <input
+                    id="temperature"
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="2"
+                    value={temperature}
+                    onChange={(e) => setTemperature(parseFloat(e.target.value))}
+                    className="settings-input"
+                  />
+                </div>
+                <div className="row">
+                  <label htmlFor="maxTokens">Max tokens</label>
+                  <input
+                    id="maxTokens"
+                    type="number"
+                    step="1"
+                    min="1"
+                    value={maxTokens}
+                    onChange={(e) => setMaxTokens(parseInt(e.target.value, 10))}
+                    className="settings-input"
+                  />
+                </div>
+                <div className="row">
+                  <label htmlFor="systemPrompt">System prompt</label>
+                  <textarea
+                    id="systemPrompt"
+                    value={systemPrompt}
+                    onChange={(e) => setSystemPrompt(e.target.value)}
+                    placeholder="Optional: set a system-level instruction"
+                    className="settings-input"
+                    rows="3"
+                  />
+                </div>
+                <div className="row byok-note">
+                  <p>Your API key is stored in your browser's localStorage and never sent to any server — it goes directly to the LLM provider you configure.</p>
                 </div>
               </>
             )}

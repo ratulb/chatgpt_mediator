@@ -4,8 +4,8 @@ export const menuItems = [
     to: "/",
   },
   {
-    title: "TASKS",
-    to: "/actions",
+    title: "CAPABILITIES",
+    to: "/capabilities",
     /***submenu: [
       {
         title: "UPLOAD FILE",
